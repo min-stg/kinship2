@@ -173,7 +173,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
             circle = list(list(x=.5* cos(seq(0, 2*pi, length=50)),
                                y=.5* sin(seq(0, 2*pi, length=50)) + .5)),
             diamond = list(list(x=c(0, -.5, 0, .5), y=c(0, .5, 1, .5))),
-            triangle= list(list(x=c(0, -.56, .56),  y=c(0, 1, 1))))
+            triangle= list(list(x=c(0, -.56, .56),  y=c(0, 0.65, 0.65))))
 
         nc <- ncol(affected)
         
