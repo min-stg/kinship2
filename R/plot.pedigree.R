@@ -8,7 +8,8 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           angle=c(90,65,40,0), keep.par=FALSE,
                           subregion, pconnect=.5, 
                           proband=-1, label=x$label,
-                          affectedColour=x$affectedColour, ...)
+                          affectedColour=x$affectedColour,
+                          pregnancyStatus=x$pregnancyStatus, ...)
 {
     Call <- match.call()
     n <- length(x$id)        
@@ -252,7 +253,34 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
             drawbox(plist$pos[i,j], i, sex[k], affected[k,],
                     status[k], col[k], basepolylist, sectionedpolylist, density, angle,
                     boxw, boxh, id[k], affectedColour)
-
+            
+            if(!is.null(pregnancyStatus)){
+              if(pregnancyStatus[k]==2){
+                ## Pregnancy status 'P'
+                text(plist$pos[i,j], i + labh*.5, "P", cex=cex, adj=c(0.5,1), ...)
+              }
+              else
+                ## Still Birth 'SB'
+                if(pregnancyStatus[k]==7){
+                  if(sex[k]==1){
+                    text(plist$pos[i,j]+ 0.1, i + labh*2.05, "SB", col="red", cex=0.8, adj=c(0.5,1), ...)
+                  }
+                  else{
+                    text(plist$pos[i,j]+ 0.1, i + labh*1.7, "SB", col="red", cex=0.8, adj=c(0.5,1), ...)
+                  }
+                }
+              else
+                ## Neonatal Death 'NND'
+                if(pregnancyStatus[k]==8){
+                  if(sex[k]==1){
+                    text(plist$pos[i,j]+ 0.1, i + labh*2.05, "NND", col="red", cex=0.8, adj=c(0.5,1), ...)
+                  }
+                  else{
+                    text(plist$pos[i,j]+ 0.1, i + labh*1.9, "NND", col="red", cex=0.8, adj=c(0.5,1), ...)
+                  }
+                }
+            }
+            
             if (n > 40) {
               text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
                    adj=c(1,0.5), srt=90, ...)
