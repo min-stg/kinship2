@@ -7,7 +7,8 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           density=c(-1, 35,55,25), mar=c(4.1, 1, 4.1, 1),
                           angle=c(90,65,40,0), keep.par=FALSE,
                           subregion, pconnect=.5, 
-                          proband=-1, label=x$label, ...)
+                          proband=-1, label=x$label,
+                          affectedColour=x$affectedColour, ...)
 {
     Call <- match.call()
     n <- length(x$id)        
@@ -186,19 +187,30 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                       theta=c(-2, -4, -6) *pi/3)))
 
       drawbox<- function(x, y, sex, affected, status, col, basepolylist,
-                sectionedpolylist, density, angle, boxw, boxh, id) {
+                sectionedpolylist, density, angle, boxw, boxh, id, affectedColour) {
+            if(is.null(affectedColour) | length(affectedColour) < length(affected)){
+              affectedColour <- c("red", "blue", "yellowgreen", "purple")
+            }
             for (i in 1:length(affected)) {
+              affectedCol <- affectedColour[i]
                 if (affected[i]==0) {
                     polygon(x + (basepolylist[[sex]])[[1]]$x *boxw,
                             y + (basepolylist[[sex]])[[1]]$y *boxh,
                             col=NA, border=col)
-                    }
-                
+                }
                 if(affected[i]==1) {
                   ## else {
-                  polygon(x + (sectionedpolylist[[sex]])[[i]]$x * boxw,
-                          y + (sectionedpolylist[[sex]])[[i]]$y * boxh,
-                          col=col, border=col)            
+                  if(sex==4){
+                    polygon(x + (basepolylist[[sex]])[[1]]$x *boxw,
+                            y + (basepolylist[[sex]])[[1]]$y *boxh,
+                            col=affectedCol, border=affectedCol)
+                  }
+                  else{
+                    sectionNo <- ifelse(i>4, 4, i)
+                    polygon(x + (sectionedpolylist[[sex]])[[sectionNo]]$x * boxw,
+                            y + (sectionedpolylist[[sex]])[[sectionNo]]$y * boxh,
+                            col=affectedCol, border=affectedCol)            
+                  }
                 }
                 if(affected[i] == -1) {
                   polygon(x + (sectionedpolylist[[sex]])[[i]]$x * boxw,
@@ -239,7 +251,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
 
             drawbox(plist$pos[i,j], i, sex[k], affected[k,],
                     status[k], col[k], basepolylist, sectionedpolylist, density, angle,
-                    boxw, boxh, id[k])
+                    boxw, boxh, id[k], affectedColour)
 
             if (n > 40) {
               text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
