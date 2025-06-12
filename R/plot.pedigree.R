@@ -223,7 +223,12 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
           }
 
       drawarrow <- function (x, y, boxw, boxh, sex) {
-        arrows(x-0.4, y+0.15, x-0.2, y+0.1, length=0.1,col = 1)
+        if(sex==1){
+          arrows(x-0.25, y+0.1, x-0.12, y+0.06, length=0.05,col = 1)
+        }
+        else{
+          arrows(x-0.25, y+0.12, x-0.1, y+0.08, length=0.05,col = 1) 
+        }
       }
 
     sex <- as.numeric(x$sex)
