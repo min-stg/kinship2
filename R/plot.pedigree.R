@@ -190,7 +190,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
       drawbox<- function(x, y, sex, affected, status, col, basepolylist,
                 sectionedpolylist, density, angle, boxw, boxh, id, affectedColour) {
             if(is.null(affectedColour) | length(affectedColour) < length(affected)){
-              affectedColour <- c("red", "blue", "yellowgreen", "purple")
+              affectedColour <- c("red", "royalblue2", "yellowgreen", "purple")
             }
             for (i in 1:length(affected)) {
               affectedCol <- affectedColour[i]
