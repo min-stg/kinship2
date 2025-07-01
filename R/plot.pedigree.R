@@ -9,7 +9,8 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           subregion, pconnect=.5, 
                           proband=-1, label=x$label,
                           affectedColour=x$affectedColour,
-                          pregnancyStatus=x$pregnancyStatus, ...)
+                          pregnancyStatus=x$pregnancyStatus,
+                          carrierStatus=x$carrierStatus, ...)
 {
     Call <- match.call()
     n <- length(x$id)        
@@ -279,6 +280,22 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                     text(plist$pos[i,j]+ 0.1, i + labh*1.9, "NND", col="red", cex=0.8, adj=c(0.5,1), ...)
                   }
                 }
+            }
+            
+            ## Carrier status
+            if(!is.null(carrierStatus)){
+              if(carrierStatus[k]==1){
+                if(sex[k]==4){
+                  points(plist$pos[i,j], i + labh*0.8, pch=19, cex=0.9)
+                }
+                else
+                  if(sex[k]==3){
+                    points(plist$pos[i,j], i + labh*1.05, pch=19, cex=1.3)
+                  }
+                else{
+                  points(plist$pos[i,j], i + labh*1.05, pch=19, cex=1.5)
+                }
+              }
             }
             
             if (n > 40) {
