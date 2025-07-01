@@ -10,7 +10,8 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           proband=-1, label=x$label,
                           affectedColour=x$affectedColour,
                           pregnancyStatus=x$pregnancyStatus,
-                          carrierStatus=x$carrierStatus, ...)
+                          carrierStatus=x$carrierStatus,
+                          multipleIndividual=x$multipleIndividual, ...)
 {
     Call <- match.call()
     n <- length(x$id)        
@@ -295,6 +296,13 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                 else{
                   points(plist$pos[i,j], i + labh*1.05, pch=19, cex=1.5)
                 }
+              }
+            }
+            
+            ## Multiple individuals i.e. number of siblings
+            if(!is.null(multipleIndividual)){
+              if(noquote(multipleIndividual[k]) > 1 || multipleIndividual[k] == "n") {
+                text(plist$pos[i,j], i + labh*.5, multipleIndividual[k], cex=cex, adj=c(0.5,1), ...)
               }
             }
             
