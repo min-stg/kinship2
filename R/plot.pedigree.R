@@ -11,7 +11,8 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           affectedColour=x$affectedColour,
                           pregnancyStatus=x$pregnancyStatus,
                           carrierStatus=x$carrierStatus,
-                          multipleIndividual=x$multipleIndividual, ...)
+                          multipleIndividual=x$multipleIndividual, 
+                          partnershipType=x$partnershipType, ...)
 {
     Call <- match.call()
     n <- length(x$id)        
@@ -302,8 +303,23 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
             ## Multiple individuals i.e. number of siblings
             if(!is.null(multipleIndividual)){
               if(noquote(multipleIndividual[k]) > 1 || multipleIndividual[k] == "n") {
-                text(plist$pos[i,j], i + labh*.5, multipleIndividual[k], cex=cex, adj=c(0.5,1), ...)
+                text(plist$pos[i,j], i + labh*.45, multipleIndividual[k], cex=cex, adj=c(0.5,1), ...)
               }
+            }
+            
+            ## Partnership type (0=Normal, 1=Separated, 2=Divorced)
+            if(!is.null(partnershipType)){
+              if(noquote(partnershipType[k]==1)){
+                segments(x0=plist$pos[i,j]-1.2*boxw, y0=i+0.8*boxh, 
+                         x1=plist$pos[i,j]-0.9*boxw, y1=i+0.2*boxh,)
+              }
+              else
+                if(noquote(partnershipType[k])==2){
+                  segments(x0=plist$pos[i,j]-1.2*boxw, y0=i+0.8*boxh, 
+                           x1=plist$pos[i,j]-0.9*boxw, y1=i+0.2*boxh,)
+                  segments(x0=plist$pos[i,j]-1.4*boxw, y0=i+0.8*boxh, 
+                           x1=plist$pos[i,j]-1.1*boxw, y1=i+0.2*boxh,)
+                }
             }
             
             if (n > 40) {
