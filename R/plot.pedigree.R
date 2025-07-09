@@ -12,7 +12,8 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           pregnancyStatus=x$pregnancyStatus,
                           carrierStatus=x$carrierStatus,
                           multipleIndividual=x$multipleIndividual, 
-                          partnershipType=x$partnershipType, ...)
+                          partnershipType=x$partnershipType, 
+                          infertilityStatus=x$infertilityStatus, ...)
 {
     Call <- match.call()
     n <- length(x$id)        
@@ -191,7 +192,20 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                       theta=c(-2, -4, -6) *pi/3)))
 
       drawbox<- function(x, y, sex, affected, status, col, basepolylist,
-                sectionedpolylist, density, angle, boxw, boxh, id, affectedColour) {
+                sectionedpolylist, density, angle, boxw, boxh, id, affectedColour, infertility) {
+        if(sex > 4){
+          if(sex==5){
+            ## No children
+            segments(x , y, x + (basepolylist[[sex]])[[1]]$x *boxw, y)
+          }
+          else
+            if(sex==6){
+              ## Infertility
+              segments(x , y, x + (basepolylist[[sex]])[[1]]$x *boxw, y)
+              segments(x , y+boxh*0.2, x + (basepolylist[[sex]])[[1]]$x *boxw, y+boxh*0.2)
+            }
+        }
+        else{
             if(is.null(affectedColour) | length(affectedColour) < length(affected)){
               affectedColour <- c("red", "royalblue2", "yellowgreen", "purple")
             }
@@ -231,12 +245,14 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                   drawarrow(x, y, boxw, boxh, sex)
                 }
                 
-              }
-            if (status==1) segments(x- .6*boxw, y+1.1*boxh, 
-                                    x+ .6*boxw, y- .1*boxh,)
+            }
+        }
+        
+        if (status==1) segments(x- .6*boxw, y+1.1*boxh, 
+                                x+ .6*boxw, y- .1*boxh,)
             ## Do a black slash per Beth, old line was
             ##        x+ .6*boxw, y- .1*boxh, col=col)
-          }
+      }
 
       drawarrow <- function (x, y, boxw, boxh, sex) {
         if(sex==1){
@@ -322,13 +338,46 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                 }
             }
             
-            if (n > 40) {
-              text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
-                   adj=c(1,0.5), srt=90, ...)
+            ## No children / Infertility status
+            if(!is.null(infertilityStatus)){
+              endy <- i + boxh
+              if(noquote(infertilityStatus[k]==1)){
+                ## No children
+                segments(plist$pos[i,j] , endy, plist$pos[i,j], endy+0.05)
+                segments(plist$pos[i,j], endy+0.05, plist$pos[i,j] + (basepolylist[[sex[k]]])[[1]]$x *boxw, endy+0.05)
+              }
+              else
+                if(noquote(infertilityStatus[k]==2)){
+                  ## Infertility
+                  segments(plist$pos[i,j] , endy, plist$pos[i,j], endy+0.05)
+                  segments(plist$pos[i,j], endy+0.05, plist$pos[i,j] + (basepolylist[[sex[k]]])[[1]]$x *boxw, endy+0.05)
+                  segments(plist$pos[i,j], endy+0.07, plist$pos[i,j] + (basepolylist[[sex[k]]])[[1]]$x *boxw, endy+0.07)
+                }
             }
-            else {
-              text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
-                   adj=c(0.5,1), ...)
+            
+            if(!is.null(infertilityStatus) && (infertilityStatus[k]==1 || infertilityStatus[k]==2)){
+              txty<- i + boxh + labh*1.5
+              if(infertilityStatus[k]==2){
+                txty <- i + boxh + labh*2
+              }
+              if (n > 40) {
+                text(plist$pos[i,j], txty, thislabel, cex=cex,
+                     adj=c(1,0.5), srt=90, ...)
+              }
+              else {
+                text(plist$pos[i,j], txty, thislabel, cex=cex,
+                     adj=c(0.5,1), ...)
+              }
+            }
+            else{
+              if (n > 40) {
+                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
+                     adj=c(1,0.5), srt=90, ...)
+              }
+              else {
+                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
+                     adj=c(0.5,1), ...)
+              } 
             }
         }
     }
