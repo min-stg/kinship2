@@ -10,7 +10,7 @@ pedigree <- function(id, dadid, momid, sex, affected, status, relation,
     # Allow for character/numeric/factor in the sex variable
     if(is.factor(sex))
             sex <- as.character(sex)
-    codes <- c("male","female", "unknown", "terminated")
+    codes <- c("male","female", "unknown", "terminated", "nochildren", "infertility")
     if(is.character(sex)) sex<- charmatch(casefold(sex, upper = FALSE), codes, nomatch = 3)        
 
     # assume either 0/1/2/4 =  female/male/unknown/term, or 1/2/3/4
@@ -19,12 +19,12 @@ pedigree <- function(id, dadid, momid, sex, affected, status, relation,
       warning("Sex values contain 0, but expected codes 1-4.\n Setting 0=male, 1=female, 2=unknown, 3=terminated. \n")
       sex <- sex + 1
     }
-    sex <- ifelse(sex < 1 | sex > 4, 3, sex)
+    sex <- ifelse(sex < 1 | sex > 6, 3, sex)
     if(all(sex > 2))
             stop("Invalid values for 'sex'")
         else if(mean(sex == 3) > 0.25)
                 warning("More than 25% of the gender values are 'unknown'")
-    sex <- factor(sex, 1:4, labels = codes)
+    sex <- factor(sex, 1:6, labels = codes)
     if (missing(missid)) {
       if (is.numeric(id)) missid <- 0
       else missid <- ""

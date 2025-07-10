@@ -195,14 +195,14 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                 sectionedpolylist, density, angle, boxw, boxh, id, affectedColour, infertility) {
         if(sex > 4){
           if(sex==5){
-            ## No children
-            segments(x , y, x + (basepolylist[[sex]])[[1]]$x *boxw, y)
+            ## draw single horizontal line for No children 
+            segments(x , y, x + (basepolylist[[1]])[[1]]$x *boxw, y)
           }
           else
             if(sex==6){
-              ## Infertility
-              segments(x , y, x + (basepolylist[[sex]])[[1]]$x *boxw, y)
-              segments(x , y+boxh*0.2, x + (basepolylist[[sex]])[[1]]$x *boxw, y+boxh*0.2)
+              ## draw double horizontal lines for Infertility
+              segments(x , y, x + (basepolylist[[1]])[[1]]$x *boxw, y)
+              segments(x , y+boxh*0.2, x + (basepolylist[[1]])[[1]]$x *boxw, y+boxh*0.2)
             }
         }
         else{
