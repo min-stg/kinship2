@@ -7,7 +7,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           density=c(-1, 35,55,25), mar=c(4.1, 1, 4.1, 1),
                           angle=c(90,65,40,0), keep.par=FALSE,
                           subregion, pconnect=.5, 
-                          proband=-1, label=x$label,
+                          proband=-1, showId=0, label=x$label,
                           affectedColour=x$affectedColour,
                           pregnancyStatus=x$pregnancyStatus,
                           carrierStatus=x$carrierStatus,
@@ -255,12 +255,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
       }
 
       drawarrow <- function (x, y, boxw, boxh, sex) {
-        if(sex==1){
-          arrows(x-0.25, y+0.1, x-0.12, y+0.06, length=0.05,col = 1)
-        }
-        else{
-          arrows(x-0.25, y+0.12, x-0.1, y+0.08, length=0.05,col = 1) 
-        }
+        arrows(x-boxw*1.5, y+boxh*1.2, x-boxw*0.7, y+boxh*0.85, length=0.05,col = 1)
       }
 
     sex <- as.numeric(x$sex)
@@ -273,6 +268,11 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                     status[k], col[k], basepolylist, sectionedpolylist, density, angle,
                     boxw, boxh, id[k], affectedColour)
             
+            if(showId==1 && sex[k]<5){
+              ## person Id
+              text(plist$pos[i,j]-boxw*0.4, i-labh*1.25, id[k], cex=cex, adj=c(0.5,1), ...) 
+            }
+            
             if(!is.null(pregnancyStatus)){
               if(pregnancyStatus[k]==2){
                 ## Pregnancy status 'P'
@@ -282,20 +282,20 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                 ## Still Birth 'SB'
                 if(pregnancyStatus[k]==7){
                   if(sex[k]==1){
-                    text(plist$pos[i,j]+ 0.1, i + labh*2.05, "SB", col="red", cex=0.8, adj=c(0.5,1), ...)
+                    text(plist$pos[i,j]+boxw*0.75, i + labh*2.05, "SB", col="red", cex=0.8, adj=c(0.5,1), ...)
                   }
                   else{
-                    text(plist$pos[i,j]+ 0.1, i + labh*1.7, "SB", col="red", cex=0.8, adj=c(0.5,1), ...)
+                    text(plist$pos[i,j]+boxw*0.75, i + labh*1.7, "SB", col="red", cex=0.8, adj=c(0.5,1), ...)
                   }
                 }
               else
                 ## Neonatal Death 'NND'
                 if(pregnancyStatus[k]==8){
                   if(sex[k]==1){
-                    text(plist$pos[i,j]+ 0.1, i + labh*2.05, "NND", col="red", cex=0.8, adj=c(0.5,1), ...)
+                    text(plist$pos[i,j]+boxw*0.75, i + labh*2.05, "NND", col="red", cex=0.8, adj=c(0.5,1), ...)
                   }
                   else{
-                    text(plist$pos[i,j]+ 0.1, i + labh*1.9, "NND", col="red", cex=0.8, adj=c(0.5,1), ...)
+                    text(plist$pos[i,j]+boxw*0.75, i + labh*1.9, "NND", col="red", cex=0.8, adj=c(0.5,1), ...)
                   }
                 }
             }
@@ -355,6 +355,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                 }
             }
             
+            ## add label
             if(!is.null(infertilityStatus) && (infertilityStatus[k]==1 || infertilityStatus[k]==2)){
               txty<- i + boxh + labh*1.5
               if(infertilityStatus[k]==2){
