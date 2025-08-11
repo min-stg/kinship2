@@ -269,17 +269,17 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                     boxw, boxh, id[k], affectedColour)
             
             if(showId==1 && sex[k]<5){
-              ## person Id
+              ## person Id - on top left of the symbol
               text(plist$pos[i,j]-boxw*0.4, i-labh*1.25, id[k], cex=cex, adj=c(0.5,1), ...) 
             }
             
             if(!is.null(pregnancyStatus)){
               if(pregnancyStatus[k]==2){
-                ## Pregnancy status 'P'
+                ## Pregnancy status 'P' - in the middle of the symbol
                 text(plist$pos[i,j], i + labh*.5, "P", cex=cex, adj=c(0.5,1), ...)
               }
               else
-                ## Still Birth 'SB'
+                ## Still Birth 'SB' - bottom right of the symbol
                 if(pregnancyStatus[k]==7){
                   if(sex[k]==1){
                     text(plist$pos[i,j]+boxw*0.75, i + labh*2.05, "SB", col="red", cex=0.8, adj=c(0.5,1), ...)
@@ -289,7 +289,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                   }
                 }
               else
-                ## Neonatal Death 'NND'
+                ## Neonatal Death 'NND' - bottom right of the symbol
                 if(pregnancyStatus[k]==8){
                   if(sex[k]==1){
                     text(plist$pos[i,j]+boxw*0.75, i + labh*2.05, "NND", col="red", cex=0.8, adj=c(0.5,1), ...)
