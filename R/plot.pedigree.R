@@ -7,7 +7,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           density=c(-1, 35,55,25), mar=c(4.1, 1, 4.1, 1),
                           angle=c(90,65,40,0), keep.par=FALSE,
                           subregion, pconnect=.5, 
-                          proband=-1, showId=0, label=x$label,
+                          proband=-1, prorbandStatus=0, showId=0, label=x$label,
                           affectedColour=x$affectedColour,
                           pregnancyStatus=x$pregnancyStatus,
                           carrierStatus=x$carrierStatus,
@@ -257,6 +257,9 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
 
       drawarrow <- function (x, y, boxw, boxh, sex) {
         arrows(x-boxw*1.5, y+boxh*1.2, x-boxw*0.7, y+boxh*0.85, length=0.05,col = 1)
+        if(!is.null(prorbandStatus) && prorbandStatus==2){
+          text(x=x-boxw*1.6, y=y+boxh*0.9, labels="P", cex=cex, ...)
+        }
       }
 
     sex <- as.numeric(x$sex)
@@ -270,13 +273,17 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                     boxw, boxh, id[k], affectedColour)
             
             if(showId==1 && sex[k]<5){
+              tY <- i-0.5*boxh
+              if(!is.null(adoptionStatus)){
+                if(sex[k]==1){
+                  tY = i-0.8*boxh
+                }
+                else{
+                  tY = i-0.7*boxh
+                }
+              }
               ## person Id - on top left of the symbol
-              if(!is.null(adoptionStatus) && sex[k]==1){
-                text(plist$pos[i,j]-boxw*0.4, i-labh*1.5, id[k], cex=cex, adj=c(0.5,1), ...) 
-              }
-              else{
-                text(plist$pos[i,j]-boxw*0.4, i-labh*1.25, id[k], cex=cex, adj=c(0.5,1), ...) 
-              }
+              text(plist$pos[i,j]-0.4*boxw, tY, id[k], cex=cex, adj=c(0.5,1), ...) 
             }
             
             if(!is.null(pregnancyStatus)){
@@ -288,20 +295,20 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                 ## Still Birth 'SB' - bottom right of the symbol
                 if(pregnancyStatus[k]==7){
                   if(sex[k]==1){
-                    text(plist$pos[i,j]+boxw*0.75, i + labh*2.05, "SB", col="red", cex=0.8, adj=c(0.5,1), ...)
+                    text(plist$pos[i,j]+boxw*0.75, i + labh*2.05, "SB", col="black", cex=0.8, adj=c(0.5,1), ...)
                   }
                   else{
-                    text(plist$pos[i,j]+boxw*0.75, i + labh*1.7, "SB", col="red", cex=0.8, adj=c(0.5,1), ...)
+                    text(plist$pos[i,j]+boxw*0.75, i + labh*1.7, "SB", col="black", cex=0.8, adj=c(0.5,1), ...)
                   }
                 }
               else
                 ## Neonatal Death 'NND' - bottom right of the symbol
                 if(pregnancyStatus[k]==8){
                   if(sex[k]==1){
-                    text(plist$pos[i,j]+boxw*0.75, i + labh*2.05, "NND", col="red", cex=0.8, adj=c(0.5,1), ...)
+                    text(plist$pos[i,j]+boxw*0.75, i + labh*2.05, "NND", col="black", cex=0.8, adj=c(0.5,1), ...)
                   }
                   else{
-                    text(plist$pos[i,j]+boxw*0.75, i + labh*1.9, "NND", col="red", cex=0.8, adj=c(0.5,1), ...)
+                    text(plist$pos[i,j]+boxw*0.75, i + labh*1.9, "NND", col="black", cex=0.8, adj=c(0.5,1), ...)
                   }
                 }
             }
@@ -366,16 +373,16 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
             if(!is.null(adoptionStatus) && (adoptionStatus[k]==1 || adoptionStatus[k]==2)){
               leftX <- plist$pos[i,j]-0.7*boxw
               rightX <- plist$pos[i,j]+0.7*boxw
-              endY <- endy
-              startY <- i
+              endY <- i+1.1*boxh
+              startY <- i-0.1*boxh
               lineType <- 1
               if(adoptionStatus[k]==1){
                 lineType=2;
               }
               ## increase high for male symbol
               if(sex[k]==1){
-                endY <- endy+0.02
-                startY <- i - 0.02
+                endY <- i+1.2*boxh
+                startY <- i-0.2*boxh
               }
               
               ## left [
