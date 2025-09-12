@@ -13,7 +13,8 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           carrierStatus=x$carrierStatus,
                           multipleIndividual=x$multipleIndividual, 
                           partnershipType=x$partnershipType, 
-                          infertilityStatus=x$infertilityStatus, ...)
+                          infertilityStatus=x$infertilityStatus,
+                          adoptionStatus=x$adoptionStatus, ...)
 {
     Call <- match.call()
     n <- length(x$id)        
@@ -270,7 +271,12 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
             
             if(showId==1 && sex[k]<5){
               ## person Id - on top left of the symbol
-              text(plist$pos[i,j]-boxw*0.4, i-labh*1.25, id[k], cex=cex, adj=c(0.5,1), ...) 
+              if(!is.null(adoptionStatus) && sex[k]==1){
+                text(plist$pos[i,j]-boxw*0.4, i-labh*1.5, id[k], cex=cex, adj=c(0.5,1), ...) 
+              }
+              else{
+                text(plist$pos[i,j]-boxw*0.4, i-labh*1.25, id[k], cex=cex, adj=c(0.5,1), ...) 
+              }
             }
             
             if(!is.null(pregnancyStatus)){
@@ -338,21 +344,49 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                 }
             }
             
+            endy <- i + boxh
+            
             ## No children / Infertility status
             if(!is.null(infertilityStatus)){
-              endy <- i + boxh
               if(noquote(infertilityStatus[k]==1)){
                 ## No children
-                segments(plist$pos[i,j] , endy, plist$pos[i,j], endy+0.05)
+                segments(plist$pos[i,j], endy, plist$pos[i,j], endy+0.05)
                 segments(plist$pos[i,j], endy+0.05, plist$pos[i,j] + (basepolylist[[sex[k]]])[[1]]$x *boxw, endy+0.05)
               }
               else
                 if(noquote(infertilityStatus[k]==2)){
                   ## Infertility
-                  segments(plist$pos[i,j] , endy, plist$pos[i,j], endy+0.05)
+                  segments(plist$pos[i,j], endy, plist$pos[i,j], endy+0.05)
                   segments(plist$pos[i,j], endy+0.05, plist$pos[i,j] + (basepolylist[[sex[k]]])[[1]]$x *boxw, endy+0.05)
                   segments(plist$pos[i,j], endy+0.07, plist$pos[i,j] + (basepolylist[[sex[k]]])[[1]]$x *boxw, endy+0.07)
                 }
+            }
+            
+            ## adoption status [ ]
+            if(!is.null(adoptionStatus) && (adoptionStatus[k]==1 || adoptionStatus[k]==2)){
+              leftX <- plist$pos[i,j]-0.7*boxw
+              rightX <- plist$pos[i,j]+0.7*boxw
+              endY <- endy
+              startY <- i
+              lineType <- 1
+              if(adoptionStatus[k]==1){
+                lineType=2;
+              }
+              ## increase high for male symbol
+              if(sex[k]==1){
+                endY <- endy+0.02
+                startY <- i - 0.02
+              }
+              
+              ## left [
+              segments(leftX, startY, leftX, endY, lty=lineType) ## left |
+              segments(leftX, startY, leftX+0.04, startY) ## upper -
+              segments(leftX, endY, leftX+0.04, endY) ## lower -
+              
+              ## right ]
+              segments(rightX, startY, rightX, endY, lty=lineType) ## right |
+              segments(rightX, startY, rightX-0.04, startY) ## upper -
+              segments(rightX, endY, rightX-0.04, endY) ## lower -
             }
             
             ## add label
