@@ -7,7 +7,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           density=c(-1, 35,55,25), mar=c(4.1, 1, 4.1, 1),
                           angle=c(90,65,40,0), keep.par=FALSE,
                           subregion, pconnect=.5, 
-                          proband=-1, prorbandStatus=0, showId=0, label=x$label,
+                          proband=-1, probandStatus=0, showId=0, label=x$label,
                           affectedColour=x$affectedColour,
                           pregnancyStatus=x$pregnancyStatus,
                           carrierStatus=x$carrierStatus,
@@ -257,7 +257,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
 
       drawarrow <- function (x, y, boxw, boxh, sex) {
         arrows(x-boxw*1.5, y+boxh*1.2, x-boxw*0.7, y+boxh*0.85, length=0.05,col = 1)
-        if(!is.null(prorbandStatus) && prorbandStatus==2){
+        if(!is.null(probandStatus) && probandStatus==2){
           text(x=x-boxw*1.6, y=y+boxh*0.9, labels="P", cex=cex, ...)
         }
       }
@@ -370,7 +370,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
             }
             
             ## adoption status [ ]
-            if(!is.null(adoptionStatus) && (adoptionStatus[k]==1 || adoptionStatus[k]==2)){
+            if(!is.null(adoptionStatus) && (adoptionStatus[k]>=1 && adoptionStatus[k]<=3)){
               leftX <- plist$pos[i,j]-0.7*boxw
               rightX <- plist$pos[i,j]+0.7*boxw
               endY <- i+1.1*boxh
@@ -394,7 +394,13 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
               segments(rightX, startY, rightX, endY, lty=lineType) ## right |
               segments(rightX, startY, rightX-0.04, startY) ## upper -
               segments(rightX, endY, rightX-0.04, endY) ## lower -
-            }
+              
+              ## add ? for possibly adopted into
+              if(adoptionStatus[k]==3){
+                text(rightX+0.03, i - labh*.05, "?", col="black", cex=cex, adj=c(0.5,1), ...)
+              }
+            
+              }
             
             ## add label
             if(!is.null(infertilityStatus) && (infertilityStatus[k]==1 || infertilityStatus[k]==2)){
