@@ -228,7 +228,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                     sectionNo <- ifelse(i>4, 4, i)
                     polygon(x + (sectionedpolylist[[sex]])[[sectionNo]]$x * boxw,
                             y + (sectionedpolylist[[sex]])[[sectionNo]]$y * boxh,
-                            col=affectedCol, border=affectedCol)            
+                            col=affectedCol, border=col, lwd=0.5)            
                   }
                 }
                 if(affected[i] == -1) {
