@@ -7,7 +7,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           density=c(-1, 35,55,25), mar=c(4.1, 1, 4.1, 1),
                           angle=c(90,65,40,0), keep.par=FALSE,
                           subregion, pconnect=.5, 
-                          proband=-1, probandStatus=0, showId=0, label=x$label,
+                          probandStatus=x$probandStatus, showId=0, label=x$label,
                           affectedColour=x$affectedColour,
                           pregnancyStatus=x$pregnancyStatus,
                           carrierStatus=x$carrierStatus,
@@ -193,7 +193,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                       theta=c(-2, -4, -6) *pi/3)))
 
       drawbox<- function(x, y, sex, affected, status, col, basepolylist,
-                sectionedpolylist, density, angle, boxw, boxh, id, affectedColour, infertility) {
+                sectionedpolylist, density, angle, boxw, boxh, id, affectedColour, probandStatusId) {
         if(sex > 4){
           if(sex==5){
             ## draw single horizontal line for No children 
@@ -242,8 +242,8 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                   points(midx, midy, pch="?", cex=min(1, cex*2/length(affected)))
                 }
               
-                if (id == proband) {
-                  drawarrow(x, y, boxw, boxh, sex)
+                if (probandStatusId == 1 || probandStatusId == 2) {
+                  drawarrow(x, y, boxw, boxh, sex, probandStatusId)
                 }
                 
             }
@@ -255,9 +255,9 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
             ##        x+ .6*boxw, y- .1*boxh, col=col)
       }
 
-      drawarrow <- function (x, y, boxw, boxh, sex) {
+      drawarrow <- function (x, y, boxw, boxh, sex, probandStatusId) {
         arrows(x-boxw*1.5, y+boxh*1.2, x-boxw*0.7, y+boxh*0.85, length=0.05,col = 1)
-        if(!is.null(probandStatus) && probandStatus==2){
+        if(!is.null(probandStatusId) && probandStatusId == 2){
           text(x=x-boxw*1.6, y=y+boxh*0.9, labels="P", cex=cex, ...)
         }
       }
@@ -270,7 +270,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
 
             drawbox(plist$pos[i,j], i, sex[k], affected[k,],
                     status[k], col[k], basepolylist, sectionedpolylist, density, angle,
-                    boxw, boxh, id[k], affectedColour)
+                    boxw, boxh, id[k], affectedColour, probandStatus[k])
             
             if(showId==1 && sex[k]<5){
               tY <- i-0.5*boxh
