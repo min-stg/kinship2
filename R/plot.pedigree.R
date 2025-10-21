@@ -6,8 +6,9 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           packed = TRUE, align = c(1.5,2), width = 8, 
                           density=c(-1, 35,55,25), mar=c(4.1, 1, 4.1, 1),
                           angle=c(90,65,40,0), keep.par=FALSE,
-                          subregion, pconnect=.5, 
+                          subregion, pconnect=.5,
                           probandStatus=x$probandStatus, showId=0, label=x$label,
+                          labelOrientation=0, labelSize=1,
                           affectedColour=x$affectedColour,
                           pregnancyStatus=x$pregnancyStatus,
                           carrierStatus=x$carrierStatus,
@@ -408,22 +409,22 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
               if(infertilityStatus[k]==2){
                 txty <- i + boxh + labh*2
               }
-              if (n > 40) {
-                text(plist$pos[i,j], txty, thislabel, cex=cex,
+              if (!is.null(labelOrientation) && labelOrientation==1) {
+                text(plist$pos[i,j], txty, thislabel, cex=labelSize,
                      adj=c(1,0.5), srt=90, ...)
               }
               else {
-                text(plist$pos[i,j], txty, thislabel, cex=cex,
+                text(plist$pos[i,j], txty, thislabel, cex=labelSize,
                      adj=c(0.5,1), ...)
               }
             }
             else{
-              if (n > 40) {
-                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
+              if (!is.null(labelOrientation) && labelOrientation==1) {
+                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=labelSize,
                      adj=c(1,0.5), srt=90, ...)
               }
               else {
-                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
+                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=labelSize,
                      adj=c(0.5,1), ...)
               } 
             }
