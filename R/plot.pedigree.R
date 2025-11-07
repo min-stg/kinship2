@@ -7,8 +7,8 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                           density=c(-1, 35,55,25), mar=c(4.1, 1, 4.1, 1),
                           angle=c(90,65,40,0), keep.par=FALSE,
                           subregion, pconnect=.5,
-                          probandStatus=x$probandStatus, showId=0, label=x$label,
-                          labelOrientation=0, labelSize=1,
+                          probandStatus=x$probandStatus, showId=0,
+                          label=x$label, labelOrientation=0,
                           affectedColour=x$affectedColour,
                           pregnancyStatus=x$pregnancyStatus,
                           carrierStatus=x$carrierStatus,
@@ -410,21 +410,21 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
                 txty <- i + boxh + labh*2
               }
               if (!is.null(labelOrientation) && labelOrientation==1) {
-                text(plist$pos[i,j], txty, thislabel, cex=labelSize,
+                text(plist$pos[i,j], txty, thislabel, cex=cex,
                      adj=c(1,0.5), srt=90, ...)
               }
               else {
-                text(plist$pos[i,j], txty, thislabel, cex=labelSize,
+                text(plist$pos[i,j], txty, thislabel, cex=cex,
                      adj=c(0.5,1), ...)
               }
             }
             else{
               if (!is.null(labelOrientation) && labelOrientation==1) {
-                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=labelSize,
+                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
                      adj=c(1,0.5), srt=90, ...)
               }
               else {
-                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=labelSize,
+                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
                      adj=c(0.5,1), ...)
               } 
             }
