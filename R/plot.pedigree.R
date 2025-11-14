@@ -22,7 +22,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
     if(is.null(status))
       status <- rep(0, n)
     else {
-        if(!all(status == 0 | status == 1))
+        if(!all(status == 0 | status == 1 | status==4))
           stop("Invalid status code")
         if(length(status) != n)
           stop("Wrong length for status")
@@ -250,8 +250,13 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
             }
         }
         
-        if (status==1) segments(x- .6*boxw, y+1.1*boxh, 
-                                x+ .6*boxw, y- .1*boxh,)
+        if (status==1 || status==4) {
+          segments(x-.6*boxw, y+1.1*boxh, x+.6*boxw, y-.1*boxh,)
+          ## cross slash for Suicide status
+          if(status==4){
+            segments(x-.6*boxw, y-.1*boxh, x+.6*boxw, y+1.1*boxh,)
+          }
+        }
             ## Do a black slash per Beth, old line was
             ##        x+ .6*boxw, y- .1*boxh, col=col)
       }

@@ -153,7 +153,7 @@ pedigree <- function(id, dadid, momid, sex, affected, status, relation,
         if(length(status) != n)
             stop("Wrong length for affected")
         if (is.logical(status)) status <- as.integer(status)
-        if(any(status != 0 & status != 1))
+        if(any(status != 0 & status != 1 & status!=4))
             stop("Invalid status code")
         temp$status <- status
         }
