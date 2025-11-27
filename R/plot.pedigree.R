@@ -445,7 +445,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
 
             temp <- (1:maxcol)[plist$spouse[i,  ] ==2]
             if (length(temp)) { #double line for double marriage
-                tempy <- tempy + boxh/10
+                tempy <- tempy + boxh/6
                 segments(plist$pos[i, temp] + boxw/2, rep(tempy, length(temp)), 
                        plist$pos[i, temp + 1] - boxw/2, rep(tempy, length(temp)))
                 }
