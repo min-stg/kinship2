@@ -419,29 +419,34 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
               }
             
             ## add label
+            txty <- i + boxh + labh*.7
+            
             if(!is.null(infertilityStatus) && (infertilityStatus[k]==1 || infertilityStatus[k]==2)){
               txty<- i + boxh + labh*1.5
               if(infertilityStatus[k]==2){
                 txty <- i + boxh + labh*2
               }
-              if (!is.null(labelOrientation) && labelOrientation==1) {
-                text(plist$pos[i,j], txty, thislabel, cex=cex,
-                     adj=c(1,0.5), srt=90, ...)
-              }
-              else {
-                text(plist$pos[i,j], txty, thislabel, cex=cex,
-                     adj=c(0.5,1), ...)
-              }
             }
-            else{
-              if (!is.null(labelOrientation) && labelOrientation==1) {
-                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
-                     adj=c(1,0.5), srt=90, ...)
+            else
+              if(sex[k]==4){
+                txty <- i + boxh
               }
-              else {
-                text(plist$pos[i,j], i + boxh + labh*.7, thislabel, cex=cex,
-                     adj=c(0.5,1), ...)
-              } 
+            else
+              if(sex[k]==7){
+                txty <- i + boxh *.5
+              }
+            else
+              if(sex[k]==8){
+                txty <- i + boxh *.3
+              }
+            
+            if (!is.null(labelOrientation) && labelOrientation==1) {
+              text(plist$pos[i,j], txty, thislabel, cex=cex,
+                   adj=c(1,0.5), srt=90, ...)
+            }
+            else {
+              text(plist$pos[i,j], txty, thislabel, cex=cex,
+                   adj=c(0.5,1), ...)
             }
         }
     }
