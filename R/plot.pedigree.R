@@ -206,6 +206,16 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
               segments(x , y, x + (basepolylist[[1]])[[1]]$x *boxw, y)
               segments(x , y+boxh*0.2, x + (basepolylist[[1]])[[1]]$x *boxw, y+boxh*0.2)
             }
+          else
+            if(sex==7){
+              # LivedLessThan1Day status symbol
+              points(x, y+boxh*0.15, pch=0,lwd=1.7, cex=cex*1.5)
+            }
+          else
+            if(sex==8){
+              # Blastocyst status symbol
+              points(x, y, pch=8, cex=cex)
+            }
         }
         else{
             if(is.null(affectedColour) | length(affectedColour) < length(affected)){
