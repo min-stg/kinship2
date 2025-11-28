@@ -81,36 +81,31 @@ pedigree <- function(id, dadid, momid, sex, affected, status, relation,
     if(any(sex[findex] != "male")) {
         who <- unique((id[findex])[sex[findex] != "male"])
         msg.n <- 1:min(5, length(who))  #Don't list a zillion
-        stop(paste("Id not male, but is a father:", 
-                   paste(who[msg.n], collapse= " ")))
+        stop(paste("Subject [Id:", paste(who[msg.n], collapse= ", "), "] not male, but is a father."))
         }
 
     if (any(findex==0 & !nofather)) {
         who <- dadid[which(findex==0 & !nofather)]
         msg.n <- 1:min(5, length(who))  #Don't list a zillion
-        stop(paste("Value of 'dadid' not found in the id list", 
-                   paste(who[msg.n], collapse= " ")))
+        stop(paste("[dadid:", paste(who[msg.n], collapse= ", "), "] not found in the id list."))
         }
         
     if(any(sex[mindex] != "female")) {
         who <- unique((id[mindex])[sex[mindex] != "female"])
         msg.n <- 1:min(5, length(who))
-        stop(paste("Id not female, but is a mother:", 
-                   paste(who[msg.n], collapse = " ")))
+        stop(paste("Subject [Id:", paste(who[msg.n], collapse= ", "), "] not female, but is a mother."))
         }
 
     if (any(mindex==0 & !nomother)) {
         who <- momid[which(mindex==0 & !nomother)]
         msg.n <- 1:min(5, length(who))  #Don't list a zillion
-        stop(paste("Value of 'momid' not found in the id list", 
-                   paste(who[msg.n], collapse= " ")))
+        stop(paste("[momid:", paste(who[msg.n], collapse= ", "), "] not found in the id list."))
         }
 
     if (any(mindex==0 & findex!=0) || any(mindex!=0 & findex==0)) {
         who <- id[which((mindex==0 & findex!=0) |(mindex!=0 & findex==0))] 
         msg.n <- 1:min(5, length(who))  #Don't list a zillion
-        stop(paste("Subjects must have both a father and mother, or have neither",
-                   paste(who[msg.n], collapse= " ")))
+        stop(paste("Subjects [Id:", paste(who[msg.n], collapse= ", "), "] must have both a father and mother, or have neither."))
     }
 
     if (!missing(famid)) {
@@ -234,7 +229,7 @@ pedigree <- function(id, dadid, momid, sex, affected, status, relation,
         if (any(code=="MZ twin")) {
             mztwins <- (code=="MZ twin")
             if (any(sex[temp1[mztwins]] != sex[temp2[mztwins]]))
-                stop("MZ Twins with different genders")
+                stop("Monozygotic Twins with different genders")
             }
 
         ##Use id index as indx1 and indx2
