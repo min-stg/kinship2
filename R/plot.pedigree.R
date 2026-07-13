@@ -407,9 +407,9 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
               rightX <- plist$pos[i,j]+0.7*boxw
               endY <- i+1.1*boxh
               startY <- i-0.1*boxh
-              lineType <- 1
-              if(adoptionStatus[k]==1){
-                lineType=2;
+              lineType <- 2 ## adopted-in
+              if(adoptionStatus[k]==2){
+                lineType=1; ## adopted-out
               }
               ## increase high for male symbol
               if(sex[k]==1){
