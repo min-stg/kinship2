@@ -352,19 +352,35 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
               }
             }
             
-            ## Partnership type (0=Normal, 1=Separated, 2=Divorced)
+            ## Partnership type
             if(!is.null(partnershipType)){
+              ## 1=Separated or Divorced (left) - single slash line to the left side of the symbol
               if(noquote(partnershipType[k]==1)){
-                segments(x0=plist$pos[i,j]-1.2*boxw, y0=i+0.8*boxh, 
-                         x1=plist$pos[i,j]-0.9*boxw, y1=i+0.2*boxh,)
+                segments(x0=plist$pos[i,j]-1.4*boxw, y0=i+0.8*boxh, 
+                         x1=plist$pos[i,j]-1.1*boxw, y1=i+0.2*boxh,)
               }
               else
-                if(noquote(partnershipType[k])==2){
+                ## 2=Separated or Divorced (right) - single slash line to the right side of the symbol
+                if(noquote(partnershipType[k]==2)){
+                  segments(x0=plist$pos[i,j]+1.4*boxw, y0=i+0.2*boxh, 
+                           x1=plist$pos[i,j]+1.1*boxw, y1=i+0.8*boxh,)
+                }
+              else
+                ## 3=No contact (left) - double slash line to the left side of the symbol
+                if(noquote(partnershipType[k])==3){
                   segments(x0=plist$pos[i,j]-1.2*boxw, y0=i+0.8*boxh, 
                            x1=plist$pos[i,j]-0.9*boxw, y1=i+0.2*boxh,)
                   segments(x0=plist$pos[i,j]-1.4*boxw, y0=i+0.8*boxh, 
                            x1=plist$pos[i,j]-1.1*boxw, y1=i+0.2*boxh,)
                 }
+              else
+                ## 4=No contact (right) - double slash line to the right side of the symbol
+                if(noquote(partnershipType[k])==4){
+                  segments(x0=plist$pos[i,j]+1.2*boxw, y0=i+0.2*boxh, 
+                         x1=plist$pos[i,j]+0.9*boxw, y1=i+0.8*boxh,)
+                  segments(x0=plist$pos[i,j]+1.4*boxw, y0=i+0.2*boxh, 
+                         x1=plist$pos[i,j]+1.1*boxw, y1=i+0.8*boxh,)
+              }
             }
             
             endy <- i + boxh
@@ -457,7 +473,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
             temp <- (1:maxcol)[plist$spouse[i,  ]>0]
             segments(plist$pos[i, temp] + boxw/2, rep(tempy, length(temp)), 
                      plist$pos[i, temp + 1] - boxw/2, rep(tempy, length(temp)))
-
+            
             temp <- (1:maxcol)[plist$spouse[i,  ] ==2]
             if (length(temp)) { #double line for double marriage
                 tempy <- tempy + boxh/6
@@ -474,7 +490,7 @@ plot.pedigree <- function(x, id = x$id, status = x$status,
             xx <- plist$pos[i - 1, fam + 0:1]
             parentx <- mean(xx)   #midpoint of parents
 
-
+            
             # Draw the uplines
             who <- (plist$fam[i,] == fam) #The kids of interest
             if (is.null(plist$twins)) target <- plist$pos[i,who]
